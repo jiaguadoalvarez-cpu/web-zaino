@@ -1,4 +1,5 @@
 import React from 'react';
+import { supabase } from './lib/supabase';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 
@@ -16,6 +17,22 @@ import ManageProjects from './pages/admin/ManageProjects';
 import EditProject from './pages/admin/EditProject';
 
 const App = () => {
+  // Safety check for missing environment variables
+  if (supabase === null) {
+    return (
+      <div style={{ padding: '40px', textAlign: 'center', fontFamily: 'sans-serif' }}>
+        <h1>⚠️ Configuración Incompleta</h1>
+        <p>La aplicación no puede conectar con Supabase.</p>
+        <p>Faltan las variables de entorno:</p>
+        <ul style={{ listStyle: 'none', padding: 0 }}>
+          <li><code>VITE_SUPABASE_URL</code></li>
+          <li><code>VITE_SUPABASE_ANON_KEY</code></li>
+        </ul>
+        <p>Por favor, revisa la configuración en Netlify.</p>
+      </div>
+    );
+  }
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
