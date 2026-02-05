@@ -17,8 +17,8 @@ const Contact = () => {
                     <a href="tel:+34699463997" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <Phone size={20} /> 699 463 997
                     </a>
-                    <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <Instagram size={20} /> @zainoyazabache (Próximamente)
+                    <a href="https://www.instagram.com/zainoyazabachecomunicacion/" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <Instagram size={20} /> @zainoyazabachecomunicacion
                     </a>
                 </div>
             </div>
