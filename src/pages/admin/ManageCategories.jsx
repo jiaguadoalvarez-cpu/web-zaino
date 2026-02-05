@@ -63,6 +63,41 @@ const ManageCategories = () => {
         }
     };
 
+    const handleUploadCover = async (e, categoryId) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        try {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `covers/${Date.now()}-${categoryId}.${fileExt}`;
+
+            // Upload
+            const { error: uploadError } = await supabase.storage
+                .from('images')
+                .upload(fileName, file);
+
+            if (uploadError) throw uploadError;
+
+            // Get URL
+            const { data: { publicUrl } } = supabase.storage
+                .from('images')
+                .getPublicUrl(fileName);
+
+            // Update Category
+            const { error: updateError } = await supabase
+                .from('categories')
+                .update({ cover_image_url: publicUrl })
+                .eq('id', categoryId);
+
+            if (updateError) throw updateError;
+
+            fetchCategories();
+            alert('Portada actualizada');
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
+    };
+
     return (
         <div className="fade-in">
             <Link to="/admin" className="back-link" style={{ marginBottom: 'var(--spacing-md)', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
@@ -90,10 +125,30 @@ const ManageCategories = () => {
             <div className="category-list">
                 {loading ? <p>Cargando...</p> : categories.map((cat) => (
                     <div key={cat.id} className="admin-list-item">
-                        <span>{cat.title} <small style={{ color: 'gray' }}>/{cat.slug}</small></span>
-                        <button onClick={() => handleDelete(cat.id)} className="delete-btn">
-                            <Trash2 size={18} />
-                        </button>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
+                            {cat.cover_image_url && (
+                                <img src={cat.cover_image_url} alt="cover" style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} />
+                            )}
+                            <div>
+                                <span style={{ display: 'block', fontWeight: 'bold' }}>{cat.title}</span>
+                                <small style={{ color: 'gray' }}>/{cat.slug}</small>
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <label style={{ cursor: 'pointer', fontSize: '0.8rem', textDecoration: 'underline', color: 'blue' }}>
+                                Cambiar Portada
+                                <input
+                                    type="file"
+                                    style={{ display: 'none' }}
+                                    accept="image/*"
+                                    onChange={(e) => handleUploadCover(e, cat.id)}
+                                />
+                            </label>
+                            <button onClick={() => handleDelete(cat.id)} className="delete-btn">
+                                <Trash2 size={18} />
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>
