@@ -68,7 +68,11 @@ const Home = () => {
             if (data && data.length > 0) {
                 // Merge fetched data with initial descriptions if missing in DB
                 const mergedData = data.map(cat => {
-                    const fallback = initialCategories.find(c => c.slug === cat.slug);
+                    // Try to find fallback by slug OR by title (normalized) to be more robust
+                    const fallback = initialCategories.find(c =>
+                        c.slug === cat.slug ||
+                        c.title.toLowerCase() === cat.title.toLowerCase()
+                    );
                     return {
                         ...cat,
                         // Use DB description if available, otherwise fallback to local hardcoded text
@@ -89,21 +93,6 @@ const Home = () => {
 
     return (
         <div className="container fade-in" style={{ paddingTop: 'var(--spacing-lg)' }}>
-
-            {/* Intro / About Section */}
-            <section className="home-intro" style={{ marginBottom: 'var(--spacing-xl)', maxWidth: '800px' }}>
-                <h1 style={{
-                    fontFamily: "'Courier New', Courier, monospace",
-                    fontSize: '1.8rem',
-                    marginBottom: 'var(--spacing-md)',
-                    fontWeight: 'normal',
-                    letterSpacing: '-0.02em',
-                    color: 'var(--color-text)'
-                }}>
-                    Zaino y Azabache Comunicación
-                </h1>
-            </section>
-
             <div className="grid-gallery">
                 {categories.map((cat) => (
                     <CategoryCard key={cat.id} category={cat} />
