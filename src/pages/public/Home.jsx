@@ -66,7 +66,16 @@ const Home = () => {
             if (error) throw error;
 
             if (data && data.length > 0) {
-                setCategories(data);
+                // Merge fetched data with initial descriptions if missing in DB
+                const mergedData = data.map(cat => {
+                    const fallback = initialCategories.find(c => c.slug === cat.slug);
+                    return {
+                        ...cat,
+                        // Use DB description if available, otherwise fallback to local hardcoded text
+                        description: cat.description || (fallback ? fallback.description : '')
+                    };
+                });
+                setCategories(mergedData);
             } else {
                 setCategories(initialCategories);
             }
@@ -93,18 +102,6 @@ const Home = () => {
                 }}>
                     Zaino y Azabache Comunicación
                 </h1>
-                <p style={{ fontSize: '1.1rem', lineHeight: '1.6', marginBottom: 'var(--spacing-md)' }}>
-                    Soy fotógrafo especializado en el mundo del vino, con años de experiencia trabajando en bodegas,
-                    proyectos culturales y marcas que entienden la imagen como parte de su identidad.
-                </p>
-                <a href="/about" className="text-link" style={{
-                    textDecoration: 'underline',
-                    textUnderlineOffset: '4px',
-                    color: 'var(--color-text)',
-                    fontWeight: '500'
-                }}>
-                    Leer más sobre mí &rarr;
-                </a>
             </section>
 
             <div className="grid-gallery">
