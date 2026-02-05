@@ -13,6 +13,7 @@ const CategoryCard = ({ category }) => {
         {!category.cover_image_url && <span className="placeholder-text">Z & A</span>}
         <div className="overlay">
           <h3 className="category-title serif">{category.title}</h3>
+          {category.description && <p className="category-description">{category.description}</p>}
         </div>
       </div>
       <style>{`
@@ -41,12 +42,15 @@ const CategoryCard = ({ category }) => {
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0, 0, 0, 0.3); /* Subtle dark overlay for contrast */
+          background: rgba(0, 0, 0, 0.6); /* Darker overlay for better text readability */
           display: flex;
+          flex-direction: column; /* Stack text vertically */
           align-items: center;
           justify-content: center;
           opacity: 0;
           transition: opacity 0.4s ease;
+          padding: 20px; /* Add padding for text */
+          z-index: 10;
         }
         .category-card:hover .overlay {
           opacity: 1;
@@ -66,6 +70,14 @@ const CategoryCard = ({ category }) => {
           color: white; /* White text for contrast */
           font-family: var(--font-serif);
           text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+          margin-bottom: 0.5rem; /* Space between title and description */
+        }
+        .category-description {
+          color: rgba(255, 255, 255, 0.9);
+          font-size: 0.9rem;
+          font-family: var(--font-sans); /* Use sans-serif for description for readability */
+          max-width: 80%;
+          line-height: 1.4;
         }
       `}</style>
     </Link>

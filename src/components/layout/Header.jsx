@@ -4,43 +4,44 @@ import { Menu, X } from 'lucide-react';
 import logo from '../../assets/logo.jpg';
 
 const Header = () => {
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-    const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenu = () => setIsOpen(!isOpen);
 
-    return (
-        <header className="header">
-            <div className="container header-content">
-                <Link to="/" className="logo-link">
-                    <img src={logo} alt="Zaino y Azabache" className="logo-img" />
-                </Link>
+  return (
+    <header className="header">
+      <div className="container header-content">
+        <Link to="/" className="logo-link">
+          <img src={logo} alt="Zaino y Azabache" className="logo-img" />
+        </Link>
+        <div className="brand-text">Zaino y Azabache Comunicación</div>
 
-                {/* Desktop Nav */}
-                <nav className="desktop-nav">
-                    <Link to="/">Home</Link>
-                    <Link to="/about">Quién soy</Link>
-                    <Link to="/services">Servicios</Link>
-                    <Link to="/gallery">Galería</Link>
-                    <Link to="/contact">Contacto</Link>
-                </nav>
+        {/* Desktop Nav */}
+        <nav className="desktop-nav">
+          <Link to="/">Home</Link>
+          <Link to="/about">Quién soy</Link>
+          <Link to="/services">Servicios</Link>
+          <Link to="/gallery">Galería</Link>
+          <Link to="/contact">Contacto</Link>
+        </nav>
 
-                {/* Mobile Menu Button */}
-                <button className="mobile-toggle" onClick={toggleMenu}>
-                    {isOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
+        {/* Mobile Menu Button */}
+        <button className="mobile-toggle" onClick={toggleMenu}>
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
 
-                {/* Mobile Nav */}
-                {isOpen && (
-                    <nav className="mobile-nav">
-                        <Link to="/" onClick={toggleMenu}>Home</Link>
-                        <Link to="/about" onClick={toggleMenu}>Quién soy</Link>
-                        <Link to="/services" onClick={toggleMenu}>Servicios</Link>
-                        <Link to="/gallery" onClick={toggleMenu}>Galería</Link>
-                        <Link to="/contact" onClick={toggleMenu}>Contacto</Link>
-                    </nav>
-                )}
-            </div>
-            <style>{`
+        {/* Mobile Nav */}
+        {isOpen && (
+          <nav className="mobile-nav">
+            <Link to="/" onClick={toggleMenu}>Home</Link>
+            <Link to="/about" onClick={toggleMenu}>Quién soy</Link>
+            <Link to="/services" onClick={toggleMenu}>Servicios</Link>
+            <Link to="/gallery" onClick={toggleMenu}>Galería</Link>
+            <Link to="/contact" onClick={toggleMenu}>Contacto</Link>
+          </nav>
+        )}
+      </div>
+      <style>{`
         .header {
           height: var(--header-height);
           border-bottom: 1px solid var(--color-border);
@@ -62,6 +63,14 @@ const Header = () => {
           height: 50px; /* Adjust based on logo aspect ratio */
           width: auto;
           /* "Usar de forma sobria" - maybe grayscale or small */
+        }
+        .brand-text {
+          font-family: 'Courier New', Courier, monospace; /* Typewriter style */
+          font-size: 1.1rem;
+          margin-left: var(--spacing-md);
+          color: var(--color-text);
+          font-weight: 500;
+          letter-spacing: -0.02em;
         }
         .desktop-nav {
           display: none;
@@ -101,6 +110,7 @@ const Header = () => {
           letter-spacing: 0.1em;
         }
 
+
         @media (min-width: 768px) {
           .desktop-nav {
             display: block;
@@ -112,9 +122,20 @@ const Header = () => {
             display: none;
           }
         }
+        
+        @media (max-width: 768px) {
+           .brand-text {
+             font-size: 0.8rem; /* Smaller on mobile */
+             margin-left: var(--spacing-sm);
+             white-space: nowrap;
+             overflow: hidden;
+             text-overflow: ellipsis;
+             max-width: 180px; /* Truncate if too long on very small screens */
+           }
+        }
       `}</style>
-        </header>
-    );
+    </header>
+  );
 };
 
 export default Header;
